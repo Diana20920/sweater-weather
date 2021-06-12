@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Get Background' do
+RSpec.describe 'Get BackgroundPic' do
   describe 'Happy Path' do
     it 'endpoint exists and has attributes' do
       location = 'denver,co'
@@ -18,26 +18,26 @@ RSpec.describe 'Get Background' do
       expect(data).to have_key(:id)
       expect(data[:id]).to eq(nil)
       expect(data).to have_key(:type)
-      expect(data[:type]).to eq('image')
+      expect(data[:type]).to eq('backgroundpic')
       expect(data).to have_key(:attributes)
       expect(data[:attributes]).to be_a(Hash)
 
       attributes = data[:attributes]
       expect(attributes.size).to eq(1)
-      expect(attributes).to have_key(:image)
+      expect(attributes).to have_key(:backgroundpic)
 
-      image = attributes[:image]
-      expect(image.size).to eq(3)
+      backgroundpic = attributes[:backgroundpic]
+      expect(backgroundpic.size).to eq(3)
 
-      expect(image).to have_key(:location)
-      expect(image[:location]).to be_a(String)
-      expect(image).to have_key(:image_url)
-      expect(image[:image_url]).to be_a(String)
-      expect(image).to have_key(:credit)
-      expect(image[:credit]).to be_a(Hash)
+      expect(backgroundpic).to have_key(:location)
+      expect(backgroundpic[:location]).to be_a(String)
+      expect(backgroundpic).to have_key(:backgroundpic_url)
+      expect(backgroundpic[:backgroundpic_url]).to be_a(String)
+      expect(backgroundpic).to have_key(:credit)
+      expect(backgroundpic[:credit]).to be_a(Hash)
 
-      credit = image[:credit]
-      expect(image.size).to eq(3)
+      credit = backgroundpic[:credit]
+      expect(backgroundpic.size).to eq(3)
 
       expect(credit).to have_key(:source)
       expect(credit[:source]).to be_a(String)
