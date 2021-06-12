@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Get Forecast' do
+RSpec.describe 'Get Forecast', :vcr do
   describe 'Happy Path' do
     it 'endpoint exists and has attributes' do
       location = 'denver,co'
