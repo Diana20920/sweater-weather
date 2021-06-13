@@ -13,38 +13,33 @@ RSpec.describe 'Get BackgroundPic' do
       expect(body).to have_key(:data)
 
       data = body[:data]
-      expect(data.size).to eq(3)
+      expect(data.size).to eq(10)
+      single_object = data.first
 
-      expect(data).to have_key(:id)
-      expect(data[:id]).to eq(nil)
-      expect(data).to have_key(:type)
-      expect(data[:type]).to eq('backgroundpic')
-      expect(data).to have_key(:attributes)
-      expect(data[:attributes]).to be_a(Hash)
+      expect(single_object).to have_key(:id)
+      expect(single_object[:id]).to eq(nil)
+      expect(single_object).to have_key(:type)
+      expect(single_object[:type]).to eq('background_pic')
+      expect(single_object).to have_key(:attributes)
+      expect(single_object[:attributes]).to be_a(Hash)
 
-      attributes = data[:attributes]
-      expect(attributes.size).to eq(1)
-      expect(attributes).to have_key(:backgroundpic)
+      attributes = single_object[:attributes]
+      expect(attributes.size).to eq(3)
 
-      backgroundpic = attributes[:backgroundpic]
-      expect(backgroundpic.size).to eq(3)
+      expect(attributes).to have_key(:location)
+      expect(attributes[:location]).to be_a(String)
+      expect(attributes).to have_key(:image_url)
+      expect(attributes[:image_url]).to be_a(String)
+      expect(attributes).to have_key(:credit)
+      expect(attributes[:credit]).to be_a(Hash)
 
-      expect(backgroundpic).to have_key(:location)
-      expect(backgroundpic[:location]).to be_a(String)
-      expect(backgroundpic).to have_key(:backgroundpic_url)
-      expect(backgroundpic[:backgroundpic_url]).to be_a(String)
-      expect(backgroundpic).to have_key(:credit)
-      expect(backgroundpic[:credit]).to be_a(Hash)
-
-      credit = backgroundpic[:credit]
-      expect(backgroundpic.size).to eq(3)
+      credit = attributes[:credit]
+      expect(attributes.size).to eq(3)
 
       expect(credit).to have_key(:source)
       expect(credit[:source]).to be_a(String)
-      expect(credit).to have_key(:author)
-      expect(credit[:author]).to be_a(String)
-      expect(credit).to have_key(:logo)
-      expect(credit[:logo]).to be_a(String)
+      expect(credit).to have_key(:photographer)
+      expect(credit[:photographer]).to be_a(String)
     end
   end
 end

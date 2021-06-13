@@ -70,15 +70,15 @@ RSpec.describe BackgroundPic do
               []}
     query = "denver,co"
 
-    backgroundpic = BackgroundPic.new(hash, query)
-    expect(backgroundpic).to be_a BackgroundPic
-    expect(backgroundpic.location).to eq(query)
-    expect(backgroundpic.location).to be_a(String)
-    expect(backgroundpic.backgroundpic_url).to eq("https://backgroundpics.unsplash.com/full_url")
-    expect(backgroundpic.backgroundpic_url).to be_a(String)
-    expect(backgroundpic.credit).to be_a(Hash)
+    image = BackgroundPic.new(hash, query)
+    expect(image).to be_a BackgroundPic
+    expect(image.location).to eq(query)
+    expect(image.location).to be_a(String)
+    expect(image.image_url).to eq("https://backgroundpics.unsplash.com/full_url")
+    expect(image.image_url).to be_a(String)
+    expect(image.credit).to be_a(Hash)
 
-    credit = backgroundpic.credit
+    credit = image.credit
     expect(credit.size).to eq(2)
     expect(credit).to have_key(:source)
     expect(credit).to have_key(:photographer)
