@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ImageService do
+RSpec.describe ImageService, :vcr do
   describe 'class methods' do
     describe '::fetch_images' do
       it 'returns data from image external API' do

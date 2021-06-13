@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Get BackgroundPic' do
+RSpec.describe 'Get BackgroundPic', :vcr do
   describe 'Happy Path' do
     it 'endpoint exists and has attributes' do
       location = 'denver,co'

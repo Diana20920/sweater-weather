@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe BackgroundPicFacade do
+RSpec.describe BackgroundPicFacade, :vcr do
   describe "class methods" do
     describe "::get_backgroundpic" do
       it "returns array of 10 background OBJECT data" do
