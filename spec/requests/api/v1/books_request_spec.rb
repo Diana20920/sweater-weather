@@ -37,7 +37,7 @@ RSpec.describe 'Search for Books per Destination City' do
       expect(attributes).to have_key(:books)
       expect(attributes[:books]).to be_an(Array)
 
-      forecast = attributes[:forecast]
+      forecast = attributes[:forecast] # forecast in that city right now
       expect(forecast.size).to eq(2)
 
       expect(forecast).to have_key(:summary)
@@ -49,48 +49,15 @@ RSpec.describe 'Search for Books per Destination City' do
       expect(books.size).to eq(quantity)
 
       first_book = books.first
+      expect(first_book.size).to eq(3)
+
       expect(first_book).to be_a(Hash)
       expect(first_book).to have_key(:isbn)
-
-
+      expect(first_book[:isbn]).to be_an(Array)
+      expect(first_book).to have_key(:title)
+      expect(first_book[:title]).to be_a(String)
+      expect(first_book).to have_key(:publisher)
+      expect(first_book[:publisher]).to be_an(Array)
     end
   end
 end
-
-{
-  "data": {
-    "id": "null",
-    "type": "books",
-    "attributes": {
-      "destination": "denver,co",
-      "forecast": {
-        "summary": "Cloudy with a chance of meatballs",
-        "temperature": "83 F"
-      },
-      "total_books_found": 172,
-      "books": [
-        {
-          "isbn": [
-            "0762507845",
-            "9780762507849"
-          ],
-          "title": "Denver, Co",
-          "publisher": [
-            "Universal Map Enterprises"
-          ]
-        },
-        {
-          "isbn": [
-            "9780883183663",
-            "0883183668"
-          ],
-          "title": "Photovoltaic safety, Denver, CO, 1988",
-          "publisher": [
-            "American Institute of Physics"
-          ]
-        },
-        { ... same format for books 3, 4 and 5 ... }
-      ]
-    }
-  }
-}
