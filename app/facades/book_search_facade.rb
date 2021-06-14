@@ -4,8 +4,6 @@ class BookSearchFacade
 
     total_found = response[:numFound]
 
-    # forecast = ForecastFacade.current_weather(destination)
-
     books = response[:docs].map do |data|
       BookResult.new(data)
     end.first(quantity)
