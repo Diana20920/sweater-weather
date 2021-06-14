@@ -5,12 +5,12 @@ class BookSearch
               :total_books_found,
               :books
 
-  def initialize(total_found, destination, forecast, data)
+  def initialize(total_found, destination, forecast, data, limit)
     @id = nil
     @destination = destination
     @forecast = weather_info(forecast)
     @total_books_found = total_found
-    @books = books_found(data)
+    @books = books_found(data, limit)
   end
 
   def weather_info(forecast)
@@ -20,11 +20,7 @@ class BookSearch
     }
   end
 
-  def books_found(data)
-    [
-      isbn: data[:isbn],
-      title: data[:title],
-      publisher: data[:publisher]
-    ]
+  def books_found(data, limit)
+    binding.pry
   end
 end

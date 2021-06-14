@@ -45,6 +45,7 @@ RSpec.describe 'Search for Books per Destination City' do
       expect(forecast[:temperature]).to be_a(String)
 
       books = attributes[:books]
+      binding.pry
       expect(books.size).to eq(quantity)
 
       first_book = books.first

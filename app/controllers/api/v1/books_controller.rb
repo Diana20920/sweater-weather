@@ -9,8 +9,8 @@ class Api::V1::BooksController < ApplicationController
     forecast = ForecastFacade.current_weather(destination)
 
     search_results = response[:docs].map do |data|
-      BookSearch.new(total_found, destination, forecast, data)
+      BookSearch.new(total_found, destination, forecast, data, quantity)
     end
-    render json: BookSearchSerializer.new(search_results)
+    render json: BooksSerializer.new(search_results)
   end
 end
