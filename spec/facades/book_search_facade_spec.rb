@@ -4,7 +4,9 @@ RSpec.describe BookSearchFacade do
   describe 'class methods' do
     describe '::search_by_destination' do
       it 'returns object from search results' do
-        results = BookSearchFacade.search_by_destination("denver,co", 4)
+        destination = "denver,co"
+        forecast = ForecastFacade.current_weather(destination)
+        results = BookSearchFacade.search_by_destination(destination, forecast, 4)
 
         expect(results.books).to be_an(Array)
         expect(results.books.size).to eq(4)
