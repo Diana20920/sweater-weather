@@ -11,7 +11,6 @@ class Api::V1::BooksController < ApplicationController
     search_results = response[:docs].map do |data|
       BookSearch.new(total_found, destination, forecast, data)
     end
-    binding.pry
-
+    render json: BookSearchSerializer.new(search_results)
   end
 end

@@ -87,7 +87,6 @@ RSpec.describe BookSearch do
     expect(book_search.forecast).to have_key(:summary)
     expect(book_search.forecast).to have_key(:temperature)
     expect(book_search.total_books_found).to eq(35992)
-    binding.pry
     expect(book_search.books).to be_an(Array)
     expect(book_search.books[0][:isbn][0]).to eq("9780762507849")
     expect(book_search.books[0][:isbn][1]).to eq("0762507845")

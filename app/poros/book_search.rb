@@ -1,10 +1,12 @@
 class BookSearch
-  attr_reader :destination,
+  attr_reader :id,
+              :destination,
               :forecast,
               :total_books_found,
               :books
 
   def initialize(total_found, destination, forecast, data)
+    @id = nil
     @destination = destination
     @forecast = weather_info(forecast)
     @total_books_found = total_found
@@ -19,7 +21,7 @@ class BookSearch
   end
 
   def books_found(data)
-    [  
+    [
       isbn: data[:isbn],
       title: data[:title],
       publisher: data[:publisher]

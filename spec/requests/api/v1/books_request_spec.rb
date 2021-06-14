@@ -13,18 +13,17 @@ RSpec.describe 'Search for Books per Destination City' do
 
       expect(body).to have_key(:data)
 
-      data = body[:data]
+      data = body[:data][0]
       expect(data.size).to eq(3)
-      single_object = data.first
 
-      expect(single_object).to have_key(:id)
-      expect(single_object[:id]).to eq(nil)
-      expect(single_object).to have_key(:type)
-      expect(single_object[:type]).to eq('books')
-      expect(single_object).to have_key(:attributes)
-      expect(single_object[:attributes]).to be_a(Hash)
+      expect(data).to have_key(:id)
+      expect(data[:id]).to eq(nil)
+      expect(data).to have_key(:type)
+      expect(data[:type]).to eq('books')
+      expect(data).to have_key(:attributes)
+      expect(data[:attributes]).to be_a(Hash)
 
-      attributes = single_object[:attributes]
+      attributes = data[:attributes]
       expect(attributes.size).to eq(4)
 
       expect(attributes).to have_key(:destination)
