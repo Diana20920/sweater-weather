@@ -66,12 +66,31 @@ RSpec.describe BookSearch do
                       ]
                     }
     destination = "denver,co"
+    current_weather = {
+      date_time:  convert_time(current[:current][:dt]),
+      sunrise:    convert_time(current[:current][:sunrise]),
+      sunset:     convert_time(current[:current][:sunset]),
+      temperature:  current[:current][:temp],
+      feels_like: current[:current][:feels_like].to_i,
+      humidity:   current[:current][:humidity],
+      uvi:        current[:current][:uvi],
+      visibility: current[:current][:visibility],
+      conditions: current[:current][:weather][0][:description],
+      icon:       current[:current][:weather][0][:icon]
+    }
 
     book_search = BookSearch.new(total_found[:numFound], destination, incoming_hash)
 
     expect(book_search).to be_a BookSearch
     expect(book_search.destination).to eq(destination)
-    expect(book_search.forecast).to eq(destination)
-
+    expect(book_search.forecast).to be_a(Hash)
+    expect(book_search.forecast).to have_key(:summary)
+    expect(book_search.forecast).to have_key(:temperature)
+    expect(book_search.total_books_found).to eq(35992)
+    expect(book_search.books).to be_an(Array)
+    expect(book_search.books[0][:isbn][0]).to eq("9780762507849")
+    expect(book_search.books[0][:isbn][1]).to eq("0762507845")
+    expect(book_search.books[0][:title]).to eq("Denver, Co")
+    expect(book_search.books[0][:publisher][0]).to eq("Universal Map Enterprises")
   end
 end
