@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe BookSearch do
   it 'exists and has attributes' do
-    limit = 7
     total_found = {
                     "numFound": 35992,
                     "start": 0,
@@ -80,7 +79,7 @@ RSpec.describe BookSearch do
        :icon=>"01d"
      }
 
-    book_search = BookSearch.new(total_found[:numFound], destination, current_weather, incoming_hash, limit)
+    book_search = BookSearch.new(total_found[:numFound], destination, current_weather, incoming_hash)
 
     expect(book_search).to be_a BookSearch
     expect(book_search.destination).to eq(destination)
@@ -88,11 +87,5 @@ RSpec.describe BookSearch do
     expect(book_search.forecast).to have_key(:summary)
     expect(book_search.forecast).to have_key(:temperature)
     expect(book_search.total_books_found).to eq(35992)
-    expect(book_search.books).to be_an(Array)
-    expect(book_search.books.size).to eq(limit)
-    expect(book_search.books[0][:isbn][0]).to eq("9780762507849")
-    expect(book_search.books[0][:isbn][1]).to eq("0762507845")
-    expect(book_search.books[0][:title]).to eq("Denver, Co")
-    expect(book_search.books[0][:publisher][0]).to eq("Universal Map Enterprises")
   end
 end

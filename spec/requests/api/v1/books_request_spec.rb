@@ -13,7 +13,7 @@ RSpec.describe 'Search for Books per Destination City' do
 
       expect(body).to have_key(:data)
 
-      data = body[:data][0]
+      data = body[:data]
       expect(data.size).to eq(3)
 
       expect(data).to have_key(:id)
@@ -45,7 +45,6 @@ RSpec.describe 'Search for Books per Destination City' do
       expect(forecast[:temperature]).to be_a(String)
 
       books = attributes[:books]
-      binding.pry
       expect(books.size).to eq(quantity)
 
       first_book = books.first
