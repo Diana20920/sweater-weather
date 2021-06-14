@@ -6,11 +6,11 @@ class BookSearch
               :books
 
   def initialize(total_found, destination, forecast, data, limit)
-    @id = nil
-    @destination = destination
-    @forecast = weather_info(forecast)
+    @id                = nil
+    @destination       = destination
+    @forecast          = weather_info(forecast)
     @total_books_found = total_found
-    @books = books_found(data, limit)
+    @books             = books_found(data, limit)
   end
 
   def weather_info(forecast)
@@ -21,6 +21,8 @@ class BookSearch
   end
 
   def books_found(data, limit)
-    binding.pry
+    data.map do |info|
+      BookResult.new(data)
+    end.first(limit)
   end
 end
