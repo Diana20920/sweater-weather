@@ -67,19 +67,19 @@ RSpec.describe BookSearch do
                     }
     destination = "denver,co"
     current_weather = {
-      date_time:  convert_time(current[:current][:dt]),
-      sunrise:    convert_time(current[:current][:sunrise]),
-      sunset:     convert_time(current[:current][:sunset]),
-      temperature:  current[:current][:temp],
-      feels_like: current[:current][:feels_like].to_i,
-      humidity:   current[:current][:humidity],
-      uvi:        current[:current][:uvi],
-      visibility: current[:current][:visibility],
-      conditions: current[:current][:weather][0][:description],
-      icon:       current[:current][:weather][0][:icon]
-    }
+       :date_time=>"2021-06-14 12:16:42 -0400",
+       :sunrise=>"2021-06-14 07:31:26 -0400",
+       :sunset=>"2021-06-14 22:29:16 -0400",
+       :temperature=>80.67,
+       :feels_like=>80,
+       :humidity=>43,
+       :uvi=>6.44,
+       :visibility=>10000,
+       :conditions=>"clear sky",
+       :icon=>"01d"
+     }
 
-    book_search = BookSearch.new(total_found[:numFound], destination, incoming_hash)
+    book_search = BookSearch.new(total_found[:numFound], destination, current_weather, incoming_hash)
 
     expect(book_search).to be_a BookSearch
     expect(book_search.destination).to eq(destination)
@@ -87,6 +87,7 @@ RSpec.describe BookSearch do
     expect(book_search.forecast).to have_key(:summary)
     expect(book_search.forecast).to have_key(:temperature)
     expect(book_search.total_books_found).to eq(35992)
+    binding.pry
     expect(book_search.books).to be_an(Array)
     expect(book_search.books[0][:isbn][0]).to eq("9780762507849")
     expect(book_search.books[0][:isbn][1]).to eq("0762507845")
