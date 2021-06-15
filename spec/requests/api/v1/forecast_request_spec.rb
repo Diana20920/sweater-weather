@@ -44,7 +44,7 @@ RSpec.describe 'Get Forecast', :vcr do
       expect(current_weather).to have_key(:temperature)
       expect(current_weather[:temperature]).to be_a(Float)
       expect(current_weather).to have_key(:feels_like)
-      # expect(current_weather[:feels_like]).to be_a(Float)
+      expect(current_weather[:feels_like]).to be_a(Float).or(be_an(Integer))
       expect(current_weather).to have_key(:humidity)
       expect(current_weather[:humidity]).to be_an(Integer)
       expect(current_weather).to have_key(:uvi)
@@ -66,9 +66,9 @@ RSpec.describe 'Get Forecast', :vcr do
       expect(daily_weather[0]).to have_key(:sunset)
       expect(daily_weather[0][:sunset]).to be_a(String)
       expect(daily_weather[0]).to have_key(:max_temp)
-      # expect(daily_weather[0][:max_temp]).to be_an(Float)
+      expect(daily_weather[0][:max_temp]).to be_an(Float).or(be_an(Integer))
       expect(daily_weather[0]).to have_key(:min_temp)
-      # expect(daily_weather[0][:min_temp]).to be_an(Float)
+      expect(daily_weather[0][:min_temp]).to be_an(Float).or(be_an(Integer))
       expect(daily_weather[0]).to have_key(:conditions)
       expect(daily_weather[0][:conditions]).to be_a(String)
       expect(daily_weather[0]).to have_key(:icon)
@@ -80,11 +80,35 @@ RSpec.describe 'Get Forecast', :vcr do
       expect(hourly_weather[0]).to have_key(:time)
       expect(hourly_weather[0][:time]).to be_a(String)
       expect(hourly_weather[0]).to have_key(:temperature)
-      # expect(hourly_weather[0][:temperature]).to be_an(Float)
+      expect(hourly_weather[0][:temperature]).to be_an(Float).or(be_an(Integer))
       expect(hourly_weather[0]).to have_key(:conditions)
       expect(hourly_weather[0][:conditions]).to be_a(String)
       expect(hourly_weather[0]).to have_key(:icon)
       expect(hourly_weather[0][:icon]).to be_a(String)
+    end
+  end
+
+  describe 'sad path/edge cases' do
+    it 'returns error when location param is missing' do
+      get "/api/v1/forecast"
+      expect(response).to have_http_status(400)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(body).to_not have_key(:data)
+      expect(body).to have_key(:error)
+      expect(body[:error]).to eq("Invalid parameters")
+    end
+
+    it 'returns error when location param is empty' do
+      get "/api/v1/forecast?location="
+      expect(response).to have_http_status(400)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(body).to_not have_key(:data)
+      expect(body).to have_key(:error)
+      expect(body[:error]).to eq("Invalid parameters")
     end
   end
 end
