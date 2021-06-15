@@ -55,4 +55,96 @@ RSpec.describe "Login Response" do
       expect(attributes).to_not have_key(:password)
     end
   end
+
+  describe 'sad path' do
+    it 'user does not exist' do
+      login_params = {
+        "email": "another@example.com",
+        "password": "password"
+      }
+      headers = {
+        CONTENT_TYPE: "application/json",
+        ACCEPT: "application/json"
+      }
+
+      post '/api/v1/sessions', headers: headers, params: JSON.generate(login_params)
+
+      expect(response).to have_http_status(400)
+      failed_login = JSON.parse(response.body, symbolize_names: true)
+
+      expect(failed_login).to have_key(:error)
+      expect(failed_login).to_not have_key(:data)
+      expect(failed_login[:error]).to eq('Invalid credentials')
+    end
+
+    it 'user email is incorrect' do
+      new_user_params = {
+        "email": "whatever@example.com",
+        "password": "password",
+        "password_confirmation": "password"
+      }
+      headers1 = {
+        CONTENT_TYPE: "application/json",
+        ACCEPT: "application/json"
+      }
+
+      post '/api/v1/users', headers: headers1, params: JSON.generate(new_user_params)
+
+      registered_user = User.last
+
+      login_params = {
+        "email": "wrong_Email@example.com",
+        "password": "password"
+      }
+      headers = {
+        CONTENT_TYPE: "application/json",
+        ACCEPT: "application/json"
+      }
+
+      post '/api/v1/sessions', headers: headers, params: JSON.generate(login_params)
+
+      expect(response).to have_http_status(400)
+
+      failed_login = JSON.parse(response.body, symbolize_names: true)
+
+      expect(failed_login).to have_key(:error)
+      expect(failed_login).to_not have_key(:data)
+      expect(failed_login[:error]).to eq('Invalid credentials')
+    end
+
+    it 'user password is incorrect' do
+      new_user_params = {
+        "email": "whatever@example.com",
+        "password": "password",
+        "password_confirmation": "password"
+      }
+      headers1 = {
+        CONTENT_TYPE: "application/json",
+        ACCEPT: "application/json"
+      }
+
+      post '/api/v1/users', headers: headers1, params: JSON.generate(new_user_params)
+
+      registered_user = User.last
+
+      login_params = {
+        "email": "whatever@example.com",
+        "password": "wrong1password1"
+      }
+      headers = {
+        CONTENT_TYPE: "application/json",
+        ACCEPT: "application/json"
+      }
+
+      post '/api/v1/sessions', headers: headers, params: JSON.generate(login_params)
+
+      expect(response).to have_http_status(400)
+
+      failed_login = JSON.parse(response.body, symbolize_names: true)
+
+      expect(failed_login).to have_key(:error)
+      expect(failed_login).to_not have_key(:data)
+      expect(failed_login[:error]).to eq('Invalid credentials')
+    end
+  end
 end
