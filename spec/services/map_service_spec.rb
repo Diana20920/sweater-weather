@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe MapService do
+RSpec.describe MapService, :vcr do
   describe 'happy path' do
     it 'has coordinates' do
       response = MapService.map_connection("alexandria, va")
