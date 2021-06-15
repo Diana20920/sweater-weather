@@ -42,4 +42,26 @@ RSpec.describe 'Get BackgroundPic', :vcr do
       expect(credit[:photographer]).to be_a(String)
     end
   end
+
+  describe 'Sad Path/Edge Case' do
+    it 'returns error if location is missing' do
+      get "/api/v1/backgrounds"
+      expect(response).to have_http_status(400)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+      expect(body).to_not have_key(:data)
+      expect(body).to have_key(:error)
+      expect(body[:error]).to eq('Invalid parameters')
+    end
+
+    it 'returns error if location is empty' do
+      get "/api/v1/backgrounds?location="
+      expect(response).to have_http_status(400)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+      expect(body).to_not have_key(:data)
+      expect(body).to have_key(:error)
+      expect(body[:error]).to eq('Invalid parameters')
+    end
+  end
 end
