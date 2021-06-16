@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Search for Books per Destination City' do
+RSpec.describe 'Search for Books per Destination City', :vcr do
   describe 'Happy Path' do
     it 'endpoint exists and has attributes' do
       location = 'denver,co'
