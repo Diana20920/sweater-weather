@@ -42,4 +42,103 @@ RSpec.describe "Users Response" do
       expect(attributes).to_not have_key(:password)
     end
   end
+
+  describe 'sad path/edge case' do
+    it 'returns error if email is empty' do
+      user_params = {
+        "email": "",
+        "password": "password",
+        "password_confirmation": "password"
+      }
+      headers = {
+        CONTENT_TYPE: "application/json",
+        ACCEPT: "application/json"
+      }
+
+      post '/api/v1/users', headers: headers, params: JSON.generate(user_params)
+      expect(response).to have_http_status(400)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(body).to_not have_key(:data)
+      expect(body).to have_key(:error)
+      expect(body[:error]).to eq("Validation failed: Email can't be blank")
+    end
+
+    it 'returns error if password is empty' do
+      user_params = {
+        "email": "whatever@example.com",
+        "password": "",
+        "password_confirmation": "password"
+      }
+      headers = {
+        CONTENT_TYPE: "application/json",
+        ACCEPT: "application/json"
+      }
+
+      post '/api/v1/users', headers: headers, params: JSON.generate(user_params)
+      expect(response).to have_http_status(400)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(body).to_not have_key(:data)
+      expect(body).to have_key(:error)
+      expect(body[:error]).to eq("Validation failed: Password can't be blank, Password can't be blank")
+    end
+
+    it 'returns error if passwords do not match' do
+      user_params = {
+        "email": "whatever@example.com",
+        "password": "not_this3password",
+        "password_confirmation": "password"
+      }
+      headers = {
+        CONTENT_TYPE: "application/json",
+        ACCEPT: "application/json"
+      }
+
+      post '/api/v1/users', headers: headers, params: JSON.generate(user_params)
+      expect(response).to have_http_status(400)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(body).to_not have_key(:data)
+      expect(body).to have_key(:error)
+      expect(body[:error]).to eq("Validation failed: Password confirmation doesn't match Password")
+    end
+
+    it 'returns error if user already exists' do
+      user_params = {
+        "email": "whatever@example.com",
+        "password": "password",
+        "password_confirmation": "password"
+      }
+      headers = {
+        CONTENT_TYPE: "application/json",
+        ACCEPT: "application/json"
+      }
+
+      post '/api/v1/users', headers: headers, params: JSON.generate(user_params)
+      expect(response).to have_http_status(201)
+
+      same_user_params = {
+        "email": "whatever@example.com",
+        "password": "another",
+        "password_confirmation": "another"
+      }
+      headers = {
+        CONTENT_TYPE: "application/json",
+        ACCEPT: "application/json"
+      }
+
+      post '/api/v1/users', headers: headers, params: JSON.generate(same_user_params)
+      expect(response).to have_http_status(400)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(body).to_not have_key(:data)
+      expect(body).to have_key(:error)
+      expect(body[:error]).to eq("Validation failed: Email has already been taken")
+    end
+  end
 end
