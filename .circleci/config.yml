@@ -18,6 +18,7 @@ jobs:
           POSTGRES_PASSWORD:
     steps:
       - checkout
+      - run: gem install bundler:2.2.19
       - run:
           name: sweater-weather
           command: bundle -v
