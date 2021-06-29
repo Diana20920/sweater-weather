@@ -6,7 +6,7 @@ jobs:
   build:
     working_directory: ~/sweater-weather
     docker:
-      - image: circleci/ruby:2.6.3
+      - image: circleci/ruby:2.5.3
         environment:
           PGHOST: localhost
           PGUSER: sweater-weather
@@ -25,7 +25,7 @@ jobs:
       - ruby/bundle-install
 
       - checkout
-      - run: bundle install --path vendor/bundle
+      - run: bundle config set --local path 'vendor/bundle'
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: bundle exec rake db:setup
       - run: bundle exec rspec
